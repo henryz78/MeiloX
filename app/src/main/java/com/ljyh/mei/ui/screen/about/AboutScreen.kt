@@ -120,7 +120,6 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
                     } else {
                         stringResource(R.string.about_check_updates)
                     },
-//                    stringResource(R.string.about_check_updates_description),
                 ) { checkForUpdates() }
             }
         }
@@ -160,16 +159,6 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
     VersionUpdateAlert(
         result = updateResult,
         onDismiss = { updateResult = null },
-    )
-}
-
-@Composable
-private fun AboutSectionTitle(title: String) {
-    Text(
-        title,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.fillMaxWidth().padding(top = 10.dp, start = 4.dp),
     )
 }
 

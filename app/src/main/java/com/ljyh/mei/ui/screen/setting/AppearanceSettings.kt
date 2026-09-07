@@ -27,7 +27,6 @@ import com.ljyh.mei.constants.AccentColorKey
 import com.ljyh.mei.constants.AccompanimentLyricTextSizeKey
 import com.ljyh.mei.constants.CoverStyle
 import com.ljyh.mei.constants.CoverStyleKey
-import com.ljyh.mei.constants.DebugKey
 import com.ljyh.mei.constants.DefaultAccentColorArgb
 import com.ljyh.mei.constants.DynamicThemeKey
 import com.ljyh.mei.constants.LyricTextSize
@@ -92,7 +91,6 @@ fun AppearanceSettings(
     val (primaryBold, setPrimaryBold) = rememberPreference(NormalLyricTextBoldKey, true)
     val (secondarySize, setSecondarySize) = rememberEnumPreference(AccompanimentLyricTextSizeKey, LyricTextSize.Size18)
     val (secondaryBold, setSecondaryBold) = rememberPreference(AccompanimentLyricTextBoldKey, true)
-    val (debug, setDebug) = rememberPreference(DebugKey, false)
 
     IosPinnedListPage(
         title = stringResource(R.string.appearance_settings),
@@ -188,11 +186,6 @@ fun AppearanceSettings(
                 AppearanceChoice(R.string.appearance_primary_size, "textformat.size", primarySize, LyricTextSize.entries, { "${it.text} sp" }, setPrimarySize)
                 AppearanceToggle(R.string.appearance_secondary_bold, null, "bold", secondaryBold, setSecondaryBold)
                 AppearanceChoice(R.string.appearance_secondary_size, "textformat.size", secondarySize, LyricTextSize.entries, { "${it.text} sp" }, setSecondarySize)
-            }
-        }
-        item {
-            SettingsGroup(stringResource(R.string.appearance_diagnostics)) {
-                AppearanceToggle(R.string.appearance_player_debug, R.string.appearance_player_debug_description, "ladybug", debug, setDebug)
             }
         }
     }

@@ -217,33 +217,6 @@ object RetrofitModule {
         return retrofit.create(QQMusicUApiService::class.java)
     }
 
-    private fun determineCryptoMethod(url: String): String {
-        // 根据 URL 或其他条件确定加密方式
-        return when {
-            url.contains("/weapi/") -> "weapi"
-            url.contains("/eapi/") -> "eapi"
-            else -> "api"
-        }
-    }
-
-
-    private fun chooseUserAgent(crypto: String, os: String): String {
-        val userAgentMap = mapOf(
-            "weapi" to mapOf(
-                "pc" to "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
-            ),
-            "linuxapi" to mapOf(
-                "linux" to "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
-            ),
-            "api" to mapOf(
-                "pc" to "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 Chrome/91.0.4472.164 NeteaseMusicDesktop/3.0.18.203152",
-                "android" to AndroidUserAgent,
-                "iphone" to "NeteaseMusic 9.0.90/5038 (iPhone; iOS 16.2; zh_CN)"
-            )
-        )
-
-        return userAgentMap[crypto]?.get(os) ?: ""
-    }
 }
 
 // 自定义适配器，动态处理 JSON 中的数字类型

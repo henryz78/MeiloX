@@ -24,8 +24,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(eApiService: EApiService, apiService: ApiService): HomeRepository {
-        return HomeRepository(eApiService, apiService)
+    fun provideHomeRepository(eApiService: EApiService): HomeRepository {
+        return HomeRepository(eApiService)
     }
 
 

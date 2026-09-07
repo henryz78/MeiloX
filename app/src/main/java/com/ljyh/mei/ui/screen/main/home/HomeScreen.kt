@@ -1,7 +1,6 @@
 package com.ljyh.mei.ui.screen.main.home
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

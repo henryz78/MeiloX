@@ -1,6 +1,5 @@
 package com.ljyh.mei.ui.component.player
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.datastore.dataStore
 import androidx.lifecycle.ViewModel

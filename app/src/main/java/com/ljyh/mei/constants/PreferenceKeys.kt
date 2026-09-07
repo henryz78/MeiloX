@@ -9,20 +9,11 @@ import com.ljyh.mei.playback.PlayMode
 import com.materialkolor.scheme.DynamicScheme
 
 val LastHomePageTime = longPreferencesKey("lastHomePageTime")
-val LastHomePageData_1 = stringPreferencesKey("lastHomePageData_1")
-val LastHomePageData_2 = stringPreferencesKey("lastHomePageData_2")
-val HideExplicitKey = booleanPreferencesKey("hideExplicit")
-val PauseListenHistoryKey = booleanPreferencesKey("pauseListenHistory")
-val DarkModeKey = stringPreferencesKey("darkMode")
-val PureBlackKey = booleanPreferencesKey("pureBlack")
-val PlayerTextAlignmentKey = stringPreferencesKey("playerTextAlignment")
-val SliderStyleKey = stringPreferencesKey("sliderStyle")
 
 val UserIdKey = stringPreferencesKey("userId")
 val UserNicknameKey = stringPreferencesKey("userNickname")
 val UserAvatarUrlKey = stringPreferencesKey("userAvatarUrl")
 val UserPhotoKey = stringPreferencesKey("userPhoto")
-val ShowLyricsKey = booleanPreferencesKey("showLyrics")
 val LyricVisualStyleKey = stringPreferencesKey("lyrics.visualStyle")
 val LyricTranslationEnabledKey = booleanPreferencesKey("lyrics.translationEnabled")
 val LyricRomanizationEnabledKey = booleanPreferencesKey("lyrics.romanizationEnabled")
@@ -71,7 +62,6 @@ val EqualizerPreampKey = floatPreferencesKey("equalizer.preamp")
 val EqualizerBandGainsKey = stringPreferencesKey("equalizer.bandGains")
 
 val DeviceIdKey = stringPreferencesKey("deviceId")
-val DebugKey = booleanPreferencesKey("debug")
 val DevModeKey = booleanPreferencesKey("dev_mode")
 val AndroidIdKey = stringPreferencesKey("androidId")
 

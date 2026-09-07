@@ -43,7 +43,6 @@ sealed class Screen(val route:String) {
     data object SongRecognition: Screen("song_recognition")
     data object Comment: Screen("comment")
     data object SongWiki: Screen("song_wiki")
-    data object Test:Screen("test")
     data object About: Screen("about")
     data object Log: Screen("log")
 
@@ -89,24 +88,10 @@ class NavigationBuilder(
     route: String
 ) {
     private var finalRoute: String = route
-    private val query: MutableMap<String, String> = hashMapOf()
 
     fun addPath(path: String) {
         finalRoute += "/$path"
     }
 
-    fun addQuery(key: String, value: String) {
-        query += key to value
-    }
-
-    fun build(): String = if (query.isEmpty()) {
-        finalRoute
-    } else {
-        "$finalRoute${
-            query.entries.joinToString(
-                separator = "&",
-                prefix = "?"
-            ) { "${it.key}=${it.value}" }
-        }"
-    }
+    fun build(): String = finalRoute
 }

@@ -44,7 +44,6 @@ import com.ljyh.mei.constants.PlaylistTrackTableHeaderKey
 import com.ljyh.mei.data.model.MediaMetadata
 import com.ljyh.mei.data.model.room.Like
 import com.ljyh.mei.ui.component.player.OverlayState
-import com.ljyh.mei.ui.glass.GlassButton
 import com.ljyh.mei.ui.glass.GlassSurface
 import com.ljyh.mei.ui.glass.IosPinnedListPage
 import com.ljyh.mei.ui.glass.IosTypography
@@ -254,19 +253,5 @@ fun CommonSongListScreen(
             onDownloadTrack = onTrackDownload,
             viewModel = viewModel,
         )
-    }
-}
-
-/** Small reusable iOS action used by callers that still expose a text action. */
-@Composable
-fun ActionButton(
-    icon: ImageVector,
-    text: String,
-    onClick: () -> Unit,
-    color: androidx.compose.ui.graphics.Color = LocalGlassColors.current.secondaryContent,
-) {
-    GlassButton(onClick = onClick) {
-        SfIcon(SfSymbol.Ellipsis, text, size = 18.dp, tint = color)
-        Text(text, style = IosTypography.caption, color = color, modifier = Modifier.padding(start = 6.dp))
     }
 }

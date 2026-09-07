@@ -115,7 +115,6 @@ class HistoryRepository @Inject constructor(
     suspend fun getHistory(): List<HistoryItem> = historyDao.getHistory().first()
     suspend fun clearHistory() = historyDao.clearHistory()
     suspend fun removeFromHistory(songId: String) = historyDao.deleteHistoryBySongId(songId)
-    suspend fun addMultipleToHistory(songs: List<Song>) { songs.forEach { addToHistory(it) } }
     suspend fun getRecentSongs(limit: Int = 20): List<HistoryItem> = historyDao.getHistory().first().take(limit)
     suspend fun isSongInHistory(songId: String): Boolean = historyDao.getHistory().first().any { it.song.id == songId }
     suspend fun getHistoryCount(): Int = historyDao.getHistory().first().size

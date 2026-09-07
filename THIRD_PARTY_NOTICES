@@ -74,14 +74,6 @@ PV Tool-derived material may be used only for non-commercial purposes unless
 the copyright holder grants separate written permission. The GPLv3 license
 for Mei does not replace or broaden the PV Tool license.
 
-ONNX Runtime
-------------
-The Android ONNX Runtime artifact
-(`com.microsoft.onnxruntime:onnxruntime-android:1.28.0`) is Copyright (c)
-Microsoft and contributors and is licensed
-under the MIT License:
-https://github.com/microsoft/onnxruntime
-
 SF Pro private project resource
 -------------------------------
 SF Pro is an Apple font included in this private, personal-use project as

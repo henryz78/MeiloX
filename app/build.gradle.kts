@@ -3,7 +3,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-//    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
@@ -90,15 +89,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.miuix.navigation3.ui.android)
     implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.miuix.navigation3.ui.android)
     implementation(libs.media3)
     implementation(libs.media3.session)
     implementation(libs.media3.okhttp)
     implementation(libs.annotations)
-    implementation(libs.androidx.core.animation)
     implementation(libs.androidx.compose.material3.window.size.class1)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -140,18 +136,15 @@ dependencies {
     implementation(libs.material.kolor)
     implementation(libs.kmpalette.core)
     implementation(libs.kmpalette.extensions.network)
-    implementation (libs.compose.colorful.sliders)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
     implementation(libs.kotlinx.serialization.core)
-    implementation(libs.serialization.android)
 
     implementation(libs.korlibs.crypto){
         exclude("com.soywiz.korlibs.krypto", "krypto-android")
     }
     implementation(libs.logging.interceptor)
-    // implementation(kotlin("reflect"))
     implementation(libs.kotlin.reflect)
     ksp(libs.kotlin.metadata.jvm)
 
@@ -169,13 +162,3 @@ dependencies {
     implementation(libs.shapes)
     implementation(libs.capsule)
 }
-
-//kotlin {
-//    sourceSets {
-//        getByName("main") {
-//            dependencies {
-//                implementation(kotlin("reflect"))
-//            }
-//        }
-//    }
-//}

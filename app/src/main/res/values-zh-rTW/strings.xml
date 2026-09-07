@@ -80,14 +80,8 @@
     <string name="lyrics_waiting">等待歌詞</string>
     <string name="app_name">MeiloX</string>
     <string name="app_name_en">MeiloX</string>
-    <string name="music_player">音樂播放器</string>
-    <string name="error_no_internet">無網路連線</string>
-    <string name="error_timeout">請求逾時</string>
-    <string name="error_unknown">未知錯誤</string>
     <string name="search_bar_search">搜尋</string>
     <string name="navigation_back">返回</string>
-    <string name="clear_search_query">清除搜尋</string>
-    <string name="search_submit">搜尋網易雲音樂</string>
     <string name="settings">設定</string>
     <string name="podcasts">Podcast</string>
     <string name="podcast_for_you">為你推薦</string>
@@ -97,7 +91,6 @@
     <string name="podcast_my_subscriptions">我的訂閱</string>
     <string name="podcast_subscribe">訂閱</string>
     <string name="podcast_subscribed">已訂閱</string>
-    <string name="podcast_duration_minutes">%1$d 分鐘</string>
     <string name="podcast_program_count">%1$d 集</string>
     <string name="podcast_loading_more">正在載入更多 Podcast</string>
     <string name="podcast_empty_subscriptions">還沒有訂閱 Podcast</string>
@@ -120,7 +113,6 @@
     <string name="share_no_contacts">暫無可用聯絡人</string>
     <string name="share_kind_song">歌曲</string>
     <string name="publish">發佈</string>
-    <string name="search_discovery_hint">搜尋歌曲、專輯、藝人、歌單與 Podcast</string>
     <string name="private_messages">私訊</string>
     <string name="message_start">發起私訊</string>
     <string name="message_search_contacts">搜尋關注的人</string>
@@ -133,8 +125,6 @@
     <string name="listen_end">結束房間</string>
     <string name="listen_room_id">房間：%1$s</string>
     <string name="listen_members">%1$d 位成員</string>
-    <string name="listen_room_placeholder">房間 ID</string>
-    <string name="listen_inviter_placeholder">邀請人 ID</string>
     <string name="listen_invitation_placeholder">貼上網易雲一起聽邀請連結</string>
     <string name="listen_paste_invitation">貼上邀請</string>
     <string name="listen_invitation_hint">邀請連結需要同時包含房間 ID 與邀請者 ID。</string>
@@ -152,10 +142,6 @@
     <string name="general_theme_light">淺色</string>
     <string name="general_theme_dark">深色</string>
     <string name="general_theme_hint">跟隨系統會根據裝置外觀自動切換淺色和深色主題。</string>
-    <string name="general_startup_navigation">啟動與導覽</string>
-    <string name="general_restore_last_tab">啟動時繼續上次頁面</string>
-    <string name="general_restore_last_tab_description">啟動後回到最近使用的主標籤頁。</string>
-    <string name="general_default_tab">預設啟動頁面</string>
     <string name="general_clipboard">剪貼簿</string>
     <string name="general_recognize_clipboard">辨識網易雲連結</string>
     <string name="general_recognize_clipboard_description">啟動後讀取一次剪貼簿，發現網易雲歌曲或一起聽邀請時會先詢問是否開啟。</string>
@@ -178,7 +164,6 @@
     <string name="appearance_dynamic_theme">歌曲動態主題</string>
     <string name="appearance_dynamic_theme_description">根據目前歌曲封面為介面著色。</string>
     <string name="appearance_accent_color">強調色</string>
-    <string name="appearance_accent_dynamic">封面</string>
     <string name="appearance_accent_default">預設</string>
     <string name="appearance_accent_custom">自訂</string>
     <string name="color_picker_grid">網格</string>
@@ -224,9 +209,6 @@
     <string name="appearance_primary_size">主歌詞大小</string>
     <string name="appearance_secondary_bold">翻譯歌詞粗體</string>
     <string name="appearance_secondary_size">翻譯歌詞大小</string>
-    <string name="appearance_diagnostics">診斷</string>
-    <string name="appearance_player_debug">播放器診斷</string>
-    <string name="appearance_player_debug_description">顯示額外的播放器除錯資訊。</string>
     <string name="settings_content">內容</string>
     <string name="settings_playback">播放</string>
     <string name="settings_downloads">下載</string>
@@ -239,7 +221,6 @@
     <string name="about_logs">診斷日誌</string>
     <string name="about_check_updates">檢查更新</string>
     <string name="about_checking_updates">正在檢查更新…</string>
-    <string name="about_check_updates_description">與 GitHub 最新 tag 比較目前版本。</string>
     <string name="about_update_available_title">發現新版本</string>
     <string name="about_update_available_message">發現版本 %1$s，目前使用的是 %2$s。</string>
     <string name="about_open_update">查看更新</string>
@@ -380,7 +361,6 @@
     <string name="search_type_playlist">歌單</string>
     <string name="search_type_podcast">播客</string>
     <string name="search_type_history">歷史</string>
-    <string name="search_discovery">搜尋發現</string>
     <string name="search_popular_recommendations">熱門推薦</string>
     <string name="search_browse_categories">瀏覽類別</string>
     <string name="search_category_rankings">排行榜</string>
@@ -486,8 +466,6 @@
     <string name="automatic_cache_threshold">觸發次數</string>
     <string name="automatic_cache_count">%1$d 次</string>
     <string name="automatic_cache_quality">自動快取音質</string>
-    <string name="lyric_copied">已複製歌詞</string>
-    <string name="lyric_copy_failed">複製歌詞失敗</string>
     <string name="content_settings">內容設定</string>
     <string name="content_modules">內容模組</string>
     <string name="content_podcasts">播客</string>
@@ -507,14 +485,9 @@
     <string name="load_failed_message">載入失敗：%1$s</string>
     <string name="no_search_results">暫無搜尋結果</string>
     <string name="library_sign_in">登入以同步音樂庫</string>
-    <string name="library_created_playlists">建立歌單</string>
-    <string name="library_collected_playlists">收藏歌單</string>
     <string name="library_collected_albums">收藏專輯</string>
-    <string name="library_local_music">本機音樂</string>
     <string name="local_music_all_songs">全部歌曲</string>
-    <string name="library_empty_created">暫無建立歌單</string>
     <string name="library_empty_collected">暫無收藏歌單</string>
-    <string name="library_empty_albums">暫無收藏專輯</string>
     <string name="library_empty_songs">暫無收藏歌曲</string>
     <string name="library_play_all">播放全部</string>
     <string name="library_heart_mode">心動模式</string>

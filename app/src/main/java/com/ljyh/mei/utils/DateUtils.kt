@@ -1,7 +1,6 @@
 package com.ljyh.mei.utils
 
 
-import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -14,9 +13,6 @@ object DateUtils {
             return true
         }
         val sixAM = getTimestampOfSixAM()
-        println("传入时间: ${Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault())}")
-        println("今天6点: ${Instant.ofEpochMilli(sixAM).atZone(ZoneId.systemDefault())}")
-        println("比较结果: ${time < sixAM}")
         return time < sixAM
 
     }
