@@ -1,8 +1,5 @@
 package com.ljyh.mei.ui.screen.about
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,13 +29,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kyant.capsule.ContinuousRoundedRectangle
 import com.ljyh.mei.BuildConfig
 import com.ljyh.mei.R
 import com.ljyh.mei.constants.DevModeKey
-import com.ljyh.mei.constants.Github
 import com.ljyh.mei.ui.glass.GlassCard
 import com.ljyh.mei.ui.glass.GlassIconButton
 import com.ljyh.mei.ui.glass.IosGroupedList
@@ -48,10 +45,10 @@ import com.ljyh.mei.ui.glass.SfIcon
 import com.ljyh.mei.ui.glass.SfSymbol
 import com.ljyh.mei.ui.local.LocalNavController
 import com.ljyh.mei.ui.local.LocalPlayerAwareWindowInsets
-import com.ljyh.mei.ui.screen.Screen
 import com.ljyh.mei.ui.component.VersionUpdateAlert
-import com.ljyh.mei.utils.rememberPreference
+import com.ljyh.mei.ui.screen.Screen
 import com.ljyh.mei.utils.VersionUpdateChecker
+import com.ljyh.mei.utils.rememberPreference
 import com.ljyh.mei.utils.VersionUpdateResult
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -63,6 +60,7 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
     val insets = LocalPlayerAwareWindowInsets.current.asPaddingValues()
     val (devMode, onDevModeChange) = rememberPreference(DevModeKey, false)
     var clickCount by remember { mutableIntStateOf(0) }
+    /*
     val updateCheckScope = rememberCoroutineScope()
     var isCheckingUpdate by remember { mutableStateOf(false) }
     var updateResult by remember { mutableStateOf<VersionUpdateResult?>(null) }
@@ -75,6 +73,7 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
             isCheckingUpdate = false
         }
     }
+    */
 
     IosPinnedListPage(
         title = stringResource(R.string.settings_about),
@@ -101,35 +100,30 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
                             }
                         },
                 )
-                Text("MeiloX", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                 Text(
                     stringResource(R.string.about_version, BuildConfig.VERSION_NAME),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    stringResource(R.string.about_description),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
         item {
             com.ljyh.mei.ui.screen.setting.SettingsGroup(stringResource(R.string.about_development)) {
-                AboutEntry("chevron.left.forwardslash.chevron.right", stringResource(R.string.about_github)) { openUrl(context, Github) }
-                AboutEntry("ladybug", stringResource(R.string.about_feedback)) { openUrl(context, "$Github/issues") }
                 AboutEntry("apple.terminal", stringResource(R.string.about_logs)) { Screen.Log.navigate(navController) }
+                /*
                 AboutEntry(
                     "arrow.clockwise",
-                    if (isCheckingUpdate) {
-                        stringResource(R.string.about_checking_updates)
-                    } else {
-                        stringResource(R.string.about_check_updates)
-                    },
+                    if (isCheckingUpdate) stringResource(R.string.about_checking_updates)
+                    else stringResource(R.string.about_check_updates),
                 ) { checkForUpdates() }
-            }
-        }
-        item {
-            com.ljyh.mei.ui.screen.setting.SettingsGroup(stringResource(R.string.about_acknowledgements)) {
-                AboutEntry("chevron.left.forwardslash.chevron.right", "Mei", stringResource(R.string.about_upstream_description)) { openUrl(context, "https://github.com/ljyh223/Mei") }
-                AboutEntry("iphone", "MeloX", stringResource(R.string.about_melox_description)) { openUrl(context, "https://github.com/youshen2/MeloX") }
-                AboutEntry("quote.bubble", "amll-ttml-db", stringResource(R.string.about_amll_description)) { openUrl(context, "https://github.com/Steve-xmh/amll-ttml-db") }
-                AboutEntry("music.note.list", "accompanist-lyrics-ui", stringResource(R.string.about_lyrics_ui_description)) { openUrl(context, "https://github.com/6xingyv/accompanist-lyrics-ui") }
-                AboutEntry("circle.lefthalf.filled", "Backdrop", stringResource(R.string.about_backdrop_description)) { openUrl(context, "https://github.com/Kyant0/AndroidLiquidGlass") }
+                */
             }
         }
         if (devMode) {
@@ -146,7 +140,10 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
         }
         item {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 24.dp).fillMaxWidth()) {
-                Text("MeiloX · ${LocalDate.now().year}", style = MaterialTheme.typography.labelSmall)
+                Text(
+                    stringResource(R.string.about_brand_year, stringResource(R.string.app_name), LocalDate.now().year),
+                    style = MaterialTheme.typography.labelSmall,
+                )
                 Text(
                     stringResource(R.string.about_compose),
                     style = MaterialTheme.typography.labelSmall,
@@ -156,12 +153,13 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
         }
     }
 
+    /*
     VersionUpdateAlert(
         result = updateResult,
         onDismiss = { updateResult = null },
     )
+    */
 }
-
 @Composable
 private fun AboutEntry(systemName: String, title: String, subtitle: String? = null, onClick: () -> Unit) {
     GlassCard(Modifier.fillMaxWidth(), onClick = onClick) {
@@ -176,8 +174,4 @@ private fun AboutEntry(systemName: String, title: String, subtitle: String? = nu
             SfIcon("chevron.forward", null, size = 15.dp, tint = LocalGlassColors.current.separator)
         }
     }
-}
-
-private fun openUrl(context: Context, url: String) {
-    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
 }

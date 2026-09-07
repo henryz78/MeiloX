@@ -46,7 +46,7 @@ suspend fun saveImageToGallery(context: Context, imageUrl: String) {
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                     put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/MeiMusic") // 自定义文件夹名
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/AuralisMusic") // 自定义文件夹名
                     put(MediaStore.MediaColumns.IS_PENDING, 1)
                 }
 

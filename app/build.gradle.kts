@@ -16,7 +16,7 @@ android {
     namespace = "com.ljyh.mei"
     compileSdk = 37
     defaultConfig {
-        applicationId = "com.neoruaa.meilox"
+        applicationId = "app.auralis.music"
         minSdk = 33
         targetSdk = 37
         versionCode = 9

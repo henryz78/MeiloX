@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -230,11 +231,29 @@ fun HomeScreen(
                 }
 
                 is Resource.Error -> {
-                    // 这里可以加一个错误重试页面
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(stringResource(R.string.load_failed), style = IosTypography.headline)
+                        Text(
+                            result.message,
+                            style = IosTypography.subheadline,
+                            color = LocalGlassColors.current.secondaryContent,
+                        )
+                    }
                 }
 
                 Resource.Loading -> {
-                    // 这里可以加 Loading Skeleton
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
         }

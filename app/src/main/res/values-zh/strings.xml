@@ -78,8 +78,8 @@
     <string name="pip_pause">暂停</string>
     <string name="pip_next">下一首</string>
     <string name="lyrics_waiting">等待歌词</string>
-    <string name="app_name">MeiloX</string>
-    <string name="app_name_en">MeiloX</string>
+    <string name="app_name">澜音</string>
+    <string name="app_name_en">Auralis</string>
     <string name="search_bar_search">搜索</string>
     <string name="navigation_back">返回</string>
     <string name="settings">设置</string>
@@ -148,7 +148,7 @@
     <string name="general_export_music_u">导出 MUSIC_U Cookie</string>
     <string name="general_export_music_u_description">将当前登录账号的 MUSIC_U 值复制到剪贴板。</string>
     <string name="clipboard_song_title">发现网易云歌曲链接</string>
-    <string name="clipboard_song_message">是否在 Mei 中打开剪贴板里的歌曲？</string>
+    <string name="clipboard_song_message">是否在澜音中打开剪贴板里的歌曲？</string>
     <string name="clipboard_listen_title">发现一起听邀请</string>
     <string name="clipboard_listen_message">是否查看剪贴板里的一起听邀请，并在加入前核对链接？</string>
     <string name="clipboard_ignore">忽略</string>
@@ -213,11 +213,10 @@
     <string name="settings_playback">播放</string>
     <string name="settings_downloads">下载</string>
     <string name="settings_about">关于</string>
-    <string name="about_logo">Mei 图标</string>
+    <string name="about_logo">澜音图标</string>
     <string name="about_version">版本 %1$s</string>
-    <string name="about_development">开发</string>
-    <string name="about_github">GitHub 仓库</string>
-    <string name="about_feedback">问题反馈</string>
+    <string name="about_description">澜音是一款面向个人使用的音乐播放器，专注于流畅播放、沉浸式歌词与舒适的音乐库体验。</string>
+    <string name="about_development">开发与开源致谢</string>
     <string name="about_logs">诊断日志</string>
     <string name="about_check_updates">检查更新</string>
     <string name="about_checking_updates">正在检查更新…</string>
@@ -228,12 +227,6 @@
     <string name="about_update_up_to_date_message">当前已经是最新版本 %1$s。</string>
     <string name="about_update_failed_title">检查更新失败</string>
     <string name="about_update_failed_message">请检查网络连接后重试。</string>
-    <string name="about_acknowledgements">开源致谢</string>
-    <string name="about_upstream_description">Mei 上游仓库</string>
-    <string name="about_melox_description">iOS 版参考实现</string>
-    <string name="about_amll_description">高质量逐字歌词库</string>
-    <string name="about_lyrics_ui_description">灵动的歌词渲染组件</string>
-    <string name="about_backdrop_description">Compose Multiplatform 流体玻璃效果</string>
     <string name="about_developer_debug">开发者调试</string>
     <string name="about_developer_enabled">开发者调试已开启</string>
     <string name="about_delete_lyrics">删除 AI 歌词数据</string>
@@ -243,6 +236,7 @@
     <string name="about_delete_qq_map_description">清除 qqSong 表</string>
     <string name="about_qq_map_deleted">QQ 音乐 ID 映射已清除</string>
     <string name="about_compose">基于 Jetpack Compose 构建</string>
+    <string name="about_brand_year">%1$s · %2$d</string>
     <string name="recognition_quick">3 秒</string>
     <string name="recognition_balanced">6 秒</string>
     <string name="recognition_extended">9 秒</string>
@@ -416,8 +410,9 @@
     <string name="unknown_song">未知歌曲</string>
     <string name="download_settings">下载设置</string>
     <string name="download_storage">存储</string>
+    <string name="download_notification">澜音音乐下载</string>
     <string name="storage_management">存储管理</string>
-    <string name="storage_managed_content">Mei 管理的内容</string>
+    <string name="storage_managed_content">澜音管理的内容</string>
     <string name="storage_device_summary">设备已使用 %1$s · 可用 %2$s</string>
     <string name="storage_reclaimable">可重新生成的缓存：%1$s</string>
     <string name="storage_items">存储项目</string>

@@ -162,6 +162,6 @@ fun navigationEntry(
             route.substringAfter("${Screen.SongWiki.route}/").toLongOrNull()
                 ?.let { SongWikiScreen(songId = it) }
         }
-        else -> error("Unknown Mei navigation route: $route")
+        else -> error("Unknown navigation route: $route")
     }
 }

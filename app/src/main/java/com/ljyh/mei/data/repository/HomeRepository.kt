@@ -23,15 +23,25 @@ import java.io.File
 class HomeRepository(private val eApiService: EApiService) {
 
     val context = AppContext.instance
+    @Volatile
+    private var memoryCache: List<HomePageResourceShow.Data.Block>? = null
+
+    fun getCachedHomePage(): List<HomePageResourceShow.Data.Block>? = memoryCache
+
     suspend fun getHomePageResourceShow(
         refresh: Boolean = false
     ): Resource<List<HomePageResourceShow.Data.Block>> {
-        Timber.tag("NewDay").d(isNewDay(getLastFetchTime(context)).toString())
+        val newDay = isNewDay(getLastFetchTime(context))
+        Timber.tag("NewDay").d(newDay.toString())
         Timber.tag("refresh").d(refresh.toString())
-        if (isNewDay(getLastFetchTime(context)) || refresh) {
+        if (!newDay && !refresh) {
+            memoryCache?.let { return Resource.Success(it) }
+        }
+        if (newDay || refresh) {
             Timber.tag("getHomePageResourceShow").d("新加载")
             val page1 =
                 eApiService.getHomePageResourceShow(buildGetHomePageResourceShow(refresh = refresh.toString()))
+            memoryCache = page1.data.blocks
             saveLastHomePage(context, 1, page1.data.blocks)
 
             Timber.tag("getHomePageResourceShow").d("更新缓存")
@@ -43,6 +53,7 @@ class HomeRepository(private val eApiService: EApiService) {
         } else {
             Timber.tag("getHomePageResourceShow").d("加载缓存")
             val page1 = getLastHomePage(context, 1)
+            memoryCache = page1
             return Resource.Success(page1)
         }
     }

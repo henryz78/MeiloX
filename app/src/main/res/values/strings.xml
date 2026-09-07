@@ -78,8 +78,8 @@
     <string name="pip_pause">Pause</string>
     <string name="pip_next">Next</string>
     <string name="lyrics_waiting">Waiting for lyrics</string>
-    <string name="app_name">MeiloX</string>
-    <string name="app_name_en">MeiloX</string>
+    <string name="app_name">Auralis</string>
+    <string name="app_name_en">Auralis</string>
 
     <string name="search_bar_search">Search</string>
     <string name="navigation_back">Back</string>
@@ -149,7 +149,7 @@
     <string name="general_export_music_u">Export MUSIC_U Cookie</string>
     <string name="general_export_music_u_description">Copy the MUSIC_U value for the current account to the clipboard.</string>
     <string name="clipboard_song_title">NetEase song link found</string>
-    <string name="clipboard_song_message">Open the song from your clipboard in Mei?</string>
+    <string name="clipboard_song_message">Open the song from your clipboard in Auralis?</string>
     <string name="clipboard_listen_title">Listen Together invitation found</string>
     <string name="clipboard_listen_message">Review the invitation from your clipboard before joining?</string>
     <string name="clipboard_ignore">Ignore</string>
@@ -214,11 +214,10 @@
     <string name="settings_playback">Playback</string>
     <string name="settings_downloads">Downloads</string>
     <string name="settings_about">About</string>
-    <string name="about_logo">Mei logo</string>
+    <string name="about_logo">Auralis logo</string>
     <string name="about_version">Version %1$s</string>
-    <string name="about_development">Development</string>
-    <string name="about_github">GitHub Repository</string>
-    <string name="about_feedback">Report an Issue</string>
+    <string name="about_description">Auralis is a personal music player focused on smooth playback, immersive lyrics, and a calm library experience.</string>
+    <string name="about_development">Development &amp; Open Source Acknowledgements</string>
     <string name="about_logs">Diagnostic Logs</string>
     <string name="about_check_updates">Check for Updates</string>
     <string name="about_checking_updates">Checking for Updates…</string>
@@ -229,12 +228,6 @@
     <string name="about_update_up_to_date_message">You are using the latest version, %1$s.</string>
     <string name="about_update_failed_title">Couldn’t Check for Updates</string>
     <string name="about_update_failed_message">Please check your network connection and try again.</string>
-    <string name="about_acknowledgements">Open Source Acknowledgements</string>
-    <string name="about_upstream_description">Mei upstream repository</string>
-    <string name="about_melox_description">iOS reference implementation</string>
-    <string name="about_amll_description">High-quality word-synced lyrics</string>
-    <string name="about_lyrics_ui_description">Expressive lyric rendering components</string>
-    <string name="about_backdrop_description">Compose Multiplatform fluid glass effects</string>
     <string name="about_developer_debug">Developer Diagnostics</string>
     <string name="about_developer_enabled">Developer diagnostics enabled</string>
     <string name="about_delete_lyrics">Delete AI Lyric Data</string>
@@ -244,6 +237,7 @@
     <string name="about_delete_qq_map_description">Clear the qqSong table</string>
     <string name="about_qq_map_deleted">QQ Music ID mapping cleared</string>
     <string name="about_compose">Built with Jetpack Compose</string>
+    <string name="about_brand_year">%1$s · %2$d</string>
     <string name="recognition_quick">3 sec</string>
     <string name="recognition_balanced">6 sec</string>
     <string name="recognition_extended">9 sec</string>
@@ -417,8 +411,9 @@
     <string name="unknown_song">Unknown song</string>
     <string name="download_settings">Download Settings</string>
     <string name="download_storage">Storage</string>
+    <string name="download_notification">Auralis music download</string>
     <string name="storage_management">Storage Management</string>
-    <string name="storage_managed_content">Mei-managed content</string>
+    <string name="storage_managed_content">Auralis-managed content</string>
     <string name="storage_device_summary">Device used %1$s · available %2$s</string>
     <string name="storage_reclaimable">Reclaimable caches: %1$s</string>
     <string name="storage_items">Storage Items</string>

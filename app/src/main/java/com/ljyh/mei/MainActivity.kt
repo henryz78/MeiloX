@@ -282,6 +282,7 @@ class MainActivity : ComponentActivity() {
             var playerConnection by remember { mutableStateOf<PlayerConnection?>(null) }
             var clipboardLink by remember { mutableStateOf<NeteaseMusicLink?>(null) }
             var clipboardInspected by rememberSaveable { mutableStateOf(false) }
+            /*
             var startupUpdateResult by remember { mutableStateOf<VersionUpdateResult?>(null) }
 
             LaunchedEffect(Unit) {
@@ -290,6 +291,7 @@ class MainActivity : ComponentActivity() {
                     startupUpdateResult = result
                 }
             }
+            */
 
             var isMeasured by remember { mutableStateOf(false) }
             DisposableEffect(Unit) {
@@ -821,14 +823,12 @@ class MainActivity : ComponentActivity() {
                                                     meiRoute.route,
                                                     bottomInset,
                                                     navigationItems,
-                                                    navigationBarVisible,
                                                     playerBottomSheetState.isDismissed,
                                                     windowsInsets,
                                                 ) {
                                                     playerAwareWindowInsetsForRoute(
                                                         route = meiRoute.route,
                                                         navigationItems = navigationItems,
-                                                        navigationBarVisible = navigationBarVisible,
                                                         playerDismissed = playerBottomSheetState.isDismissed,
                                                         windowsInsets = windowsInsets,
                                                         bottomInset = bottomInset,
@@ -1014,10 +1014,12 @@ class MainActivity : ComponentActivity() {
                                 },
                             )
                         }
+                        /*
                         VersionUpdateAlert(
                             result = startupUpdateResult,
                             onDismiss = { startupUpdateResult = null },
                         )
+                        */
                         }
                     }
                 }
@@ -1138,7 +1140,6 @@ private fun AnimatedBottomNavigationRow(
 private fun playerAwareWindowInsetsForRoute(
     route: String,
     navigationItems: List<Index>,
-    navigationBarVisible: Boolean,
     playerDismissed: Boolean,
     windowsInsets: WindowInsets,
     bottomInset: Dp,
@@ -1146,7 +1147,8 @@ private fun playerAwareWindowInsetsForRoute(
     val allowsNavigationBar =
         navigationItems.fastAny { it.route == route } || route == Screen.Search.route
     var bottom = bottomInset
-    if (allowsNavigationBar && navigationBarVisible) bottom += NavigationBarHeight
+    // Scrolling compacts the bar but does not remove it from the screen.
+    if (allowsNavigationBar) bottom += NavigationBarHeight
     if (!playerDismissed) {
         bottom += MiniPlayerHeight
         if (!allowsNavigationBar) bottom += NavigationBarBottomMargin

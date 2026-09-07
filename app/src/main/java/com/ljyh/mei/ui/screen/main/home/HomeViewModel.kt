@@ -21,19 +21,26 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val context= AppContext.instance
 
-    private val _homePageResourceShow =
-        MutableStateFlow<Resource<List<HomePageResourceShow.Data.Block>>>(Resource.Loading)
+    private val _homePageResourceShow = MutableStateFlow<Resource<List<HomePageResourceShow.Data.Block>>>(
+        repository.getCachedHomePage()?.let { Resource.Success(it) } ?: Resource.Loading
+    )
     val homePageResourceShow: StateFlow<Resource<List<HomePageResourceShow.Data.Block>>> = _homePageResourceShow
+    private var hasLoadedInViewModel = false
 
 
     fun homePageResourceShow(refresh: Boolean = false) {
         viewModelScope.launch {
             // 如果不是刷新且有成功数据，则不加载
             val currentData = _homePageResourceShow.value
-            if (!refresh && currentData is Resource.Success) return@launch
+            if (!refresh && hasLoadedInViewModel) return@launch
 
-            _homePageResourceShow.value = Resource.Loading
-            _homePageResourceShow.value = repository.getHomePageResourceShow(refresh)
+            if (currentData !is Resource.Success) {
+                _homePageResourceShow.value = Resource.Loading
+            }
+            val result = repository.getHomePageResourceShow(refresh)
+            if (result is Resource.Error && currentData is Resource.Success) return@launch
+            _homePageResourceShow.value = result
+            hasLoadedInViewModel = true
         }
     }
     fun getColors(url: String): androidx.compose.ui.graphics.Color? {

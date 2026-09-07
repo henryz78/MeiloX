@@ -25,7 +25,6 @@ class FindMusicViewModel @Inject constructor(
 
     private val _highQualityPlaylist = MutableStateFlow<Resource<HighQualityPlaylistResult>>(Resource.Loading)
     val highQualityPlaylist = _highQualityPlaylist.asStateFlow()
-    private val _playlistCache = mutableMapOf<String, HighQualityPlaylistResult>()
     private var loadJob: Job? = null
     private var loadGeneration = 0
 
@@ -43,16 +42,7 @@ class FindMusicViewModel @Inject constructor(
         // 1. 更新选中的 Tag UI
         _selectedCategory.value = category
 
-        // 2. 检查缓存
-        if (_playlistCache.containsKey(category)) {
-            loadGeneration++
-            loadJob?.cancel()
-            // 【命中缓存】：直接使用缓存数据，不发网络请求
-            _highQualityPlaylist.value = Resource.Success(_playlistCache[category]!!)
-        } else {
-            // 【未命中缓存】：发起网络请求
-            loadCategoryData(category)
-        }
+        loadCategoryData(category)
     }
 
     /**
@@ -61,30 +51,37 @@ class FindMusicViewModel @Inject constructor(
      */
     fun loadCategoryData(cat: String, limit: Int = 30, forceRefresh: Boolean = false) {
         val category = normalizeCategory(cat)
-        if (!forceRefresh) {
-            _playlistCache[category]?.let { cached ->
+        val cached = if (!forceRefresh) {
+            repository.getCachedHighQualityPlaylist(category, limit)
+        } else {
+            null
+        }
+        val cachedIsStale = cached != null && repository.isHighQualityPlaylistCacheStale(category, limit)
+
+        if (cached != null) {
+            _highQualityPlaylist.value = Resource.Success(cached)
+            if (!cachedIsStale) {
                 loadGeneration++
                 loadJob?.cancel()
-                _highQualityPlaylist.value = Resource.Success(cached)
                 return
             }
         }
+
         val generation = ++loadGeneration
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
-            _highQualityPlaylist.value = Resource.Loading
-
-            // 调用 Repository
-            val result = repository.getHighQualityPlaylist(category, limit)
-            if (generation != loadGeneration) return@launch
-
-            // 如果请求成功，写入缓存
-            if (result is Resource.Success) {
-                _playlistCache[category] = result.data
+            if (cached == null) {
+                _highQualityPlaylist.value = Resource.Loading
             }
 
-            // 更新 UI
-            _highQualityPlaylist.value = result
+            // 调用 Repository
+            val result = repository.getHighQualityPlaylist(category, limit, forceRefresh)
+            if (generation != loadGeneration) return@launch
+
+            // 有旧数据时，刷新失败不清空当前页面
+            if (result is Resource.Success || cached == null) {
+                _highQualityPlaylist.value = result
+            }
         }
     }
 

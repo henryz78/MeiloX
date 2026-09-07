@@ -25,7 +25,7 @@ object DownloadManager {
     private val managementScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     fun getDefaultDownloadPath(): String {
-        return "Music/Mei"
+        return "Music/Auralis"
     }
 
     suspend fun enqueue(

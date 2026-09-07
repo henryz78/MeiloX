@@ -32,12 +32,30 @@ import com.ljyh.mei.playback.playbackQualityFallbacks
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class PlaylistRepository(
     private val apiService: ApiService,
     private val weApiService: WeApiService,
     private val eApiService: EApiService
 ) {
+    private data class CachedHighQualityPlaylist(
+        val data: HighQualityPlaylistResult,
+        val dayKey: Int,
+    )
+
+    private val highQualityPlaylistCache = mutableMapOf<String, CachedHighQualityPlaylist>()
+
+    fun getCachedHighQualityPlaylist(cat: String, limit: Int = 30): HighQualityPlaylistResult? =
+        synchronized(highQualityPlaylistCache) {
+            highQualityPlaylistCache["$cat:$limit"]?.data
+        }
+
+    fun isHighQualityPlaylistCacheStale(cat: String, limit: Int = 30): Boolean =
+        synchronized(highQualityPlaylistCache) {
+            highQualityPlaylistCache["$cat:$limit"]?.dayKey != currentDayKey()
+        }
+
     suspend fun getPlaylistDetail(id: String): Resource<PlaylistDetail> {
         return withContext(Dispatchers.IO) {
             safeApiCall {
@@ -257,9 +275,17 @@ class PlaylistRepository(
         }
     }
 
-    suspend fun getHighQualityPlaylist(cat:String, limit:Int): Resource<HighQualityPlaylistResult>{
+    suspend fun getHighQualityPlaylist(
+        cat: String,
+        limit: Int,
+        forceRefresh: Boolean = false,
+    ): Resource<HighQualityPlaylistResult> {
+        if (!forceRefresh && !isHighQualityPlaylistCacheStale(cat, limit)) {
+            getCachedHighQualityPlaylist(cat, limit)?.let { return Resource.Success(it) }
+        }
+
         return withContext(Dispatchers.IO){
-            safeApiCall {
+            val result = safeApiCall {
                 weApiService.getHighQualityPlaylist(
                     HighQualityPlaylist(
                         category = cat,
@@ -267,7 +293,21 @@ class PlaylistRepository(
                     )
                 )
             }
+            if (result is Resource.Success) {
+                synchronized(highQualityPlaylistCache) {
+                    highQualityPlaylistCache["$cat:$limit"] = CachedHighQualityPlaylist(
+                        data = result.data,
+                        dayKey = currentDayKey(),
+                    )
+                }
+            }
+            result
         }
+    }
+
+    private fun currentDayKey(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.YEAR) * 1_000 + calendar.get(Calendar.DAY_OF_YEAR)
     }
 
 

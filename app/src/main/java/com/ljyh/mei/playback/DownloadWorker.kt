@@ -97,7 +97,7 @@ class DownloadWorker(
         }
         val playlistName = inputData.getString(KEY_PLAYLIST_NAME) ?: "未分类"
         val downloadPath = inputData.getString(KEY_DOWNLOAD_PATH)
-            ?: "Music/Mei"
+            ?: "Music/Auralis"
 
         val songIds: List<String> = try {
             Gson().fromJson(songIdsJson, object : TypeToken<List<String>>() {}.type)
@@ -114,7 +114,7 @@ class DownloadWorker(
         val totalCount = songIds.size
 
         val sanitizedPlaylistName = specialReplace(playlistName).trim()
-        val configuredRoot = downloadPath.trim().trim('/').ifBlank { "Music/Mei" }
+        val configuredRoot = downloadPath.trim().trim('/').ifBlank { "Music/Auralis" }
         val relativePath = "$configuredRoot/$sanitizedPlaylistName"
         val tempDir = File(applicationContext.cacheDir, "download")
         if (!tempDir.exists()) tempDir.mkdirs()
@@ -492,7 +492,7 @@ class DownloadWorker(
 
             val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                 .setContentTitle(title)
-                .setContentText("Mei 音乐下载")
+                .setContentText(applicationContext.getString(R.string.download_notification))
                 .setSmallIcon(R.drawable.baseline_download_24)
                 .setOngoing(ongoing)
                 .setProgress(100, progress, !ongoing)

@@ -78,8 +78,8 @@
     <string name="pip_pause">暫停</string>
     <string name="pip_next">下一首</string>
     <string name="lyrics_waiting">等待歌詞</string>
-    <string name="app_name">MeiloX</string>
-    <string name="app_name_en">MeiloX</string>
+    <string name="app_name">瀾音</string>
+    <string name="app_name_en">Auralis</string>
     <string name="search_bar_search">搜尋</string>
     <string name="navigation_back">返回</string>
     <string name="settings">設定</string>
@@ -148,7 +148,7 @@
     <string name="general_export_music_u">匯出 MUSIC_U Cookie</string>
     <string name="general_export_music_u_description">將目前登入帳號的 MUSIC_U 值複製到剪貼簿。</string>
     <string name="clipboard_song_title">發現網易雲歌曲連結</string>
-    <string name="clipboard_song_message">是否在 Mei 中開啟剪貼簿裡的歌曲？</string>
+    <string name="clipboard_song_message">是否在瀾音中開啟剪貼簿裡的歌曲？</string>
     <string name="clipboard_listen_title">發現一起聽邀請</string>
     <string name="clipboard_listen_message">是否查看剪貼簿裡的一起聽邀請，並在加入前核對連結？</string>
     <string name="clipboard_ignore">忽略</string>
@@ -213,11 +213,10 @@
     <string name="settings_playback">播放</string>
     <string name="settings_downloads">下載</string>
     <string name="settings_about">關於</string>
-    <string name="about_logo">Mei 圖示</string>
+    <string name="about_logo">瀾音圖示</string>
     <string name="about_version">版本 %1$s</string>
-    <string name="about_development">開發</string>
-    <string name="about_github">GitHub 儲存庫</string>
-    <string name="about_feedback">問題回報</string>
+    <string name="about_description">瀾音是一款面向個人使用的音樂播放器，專注於流暢播放、沉浸式歌詞與舒適的音樂庫體驗。</string>
+    <string name="about_development">開發與開源致謝</string>
     <string name="about_logs">診斷日誌</string>
     <string name="about_check_updates">檢查更新</string>
     <string name="about_checking_updates">正在檢查更新…</string>
@@ -228,12 +227,6 @@
     <string name="about_update_up_to_date_message">目前已是最新版本 %1$s。</string>
     <string name="about_update_failed_title">檢查更新失敗</string>
     <string name="about_update_failed_message">請檢查網路連線後重試。</string>
-    <string name="about_acknowledgements">開源致謝</string>
-    <string name="about_upstream_description">Mei 上游儲存庫</string>
-    <string name="about_melox_description">iOS 版參考實作</string>
-    <string name="about_amll_description">高品質逐字歌詞庫</string>
-    <string name="about_lyrics_ui_description">靈動的歌詞渲染元件</string>
-    <string name="about_backdrop_description">Compose Multiplatform 流體玻璃效果</string>
     <string name="about_developer_debug">開發者除錯</string>
     <string name="about_developer_enabled">開發者除錯已開啟</string>
     <string name="about_delete_lyrics">刪除 AI 歌詞資料</string>
@@ -243,6 +236,7 @@
     <string name="about_delete_qq_map_description">清除 qqSong 資料表</string>
     <string name="about_qq_map_deleted">QQ 音樂 ID 對應已清除</string>
     <string name="about_compose">基於 Jetpack Compose 建置</string>
+    <string name="about_brand_year">%1$s · %2$d</string>
     <string name="recognition_quick">3 秒</string>
     <string name="recognition_balanced">6 秒</string>
     <string name="recognition_extended">9 秒</string>
@@ -416,8 +410,9 @@
     <string name="unknown_song">未知歌曲</string>
     <string name="download_settings">下載設定</string>
     <string name="download_storage">儲存空間</string>
+    <string name="download_notification">瀾音音樂下載</string>
     <string name="storage_management">儲存空間管理</string>
-    <string name="storage_managed_content">Mei 管理的內容</string>
+    <string name="storage_managed_content">瀾音管理的內容</string>
     <string name="storage_device_summary">裝置已使用 %1$s · 可用 %2$s</string>
     <string name="storage_reclaimable">可重新產生的快取：%1$s</string>
     <string name="storage_items">儲存項目</string>
