@@ -63,6 +63,7 @@ val EqualizerPreampKey = floatPreferencesKey("equalizer.preamp")
 val EqualizerBandGainsKey = stringPreferencesKey("equalizer.bandGains")
 
 val DeviceIdKey = stringPreferencesKey("deviceId")
+val DebugKey = booleanPreferencesKey("debug")
 val DevModeKey = booleanPreferencesKey("dev_mode")
 val AndroidIdKey = stringPreferencesKey("androidId")
 
