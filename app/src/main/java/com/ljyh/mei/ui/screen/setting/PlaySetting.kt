@@ -144,11 +144,6 @@ fun PlaySetting(
 }
 
 @Composable
-private fun SettingsHeading(title: String) {
-    Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 12.dp, start = 4.dp))
-}
-
-@Composable
 private fun ToggleRow(
     title: String,
     symbol: String,
