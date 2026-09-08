@@ -19,8 +19,8 @@ android {
         applicationId = "app.auralis.music"
         minSdk = 33
         targetSdk = 37
-        versionCode = 9
-        versionName = "1.54.4"
+        versionCode = 10
+        versionName = "1.54.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             //noinspection ChromeOsAbiSupport

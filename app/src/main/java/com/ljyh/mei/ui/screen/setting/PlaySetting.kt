@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -29,6 +30,7 @@ import com.ljyh.mei.constants.AutoMixTailCutBarsKey
 import com.ljyh.mei.constants.AutoMixTempoMatchingKey
 import com.ljyh.mei.constants.AutoMixTransitionBarsKey
 import com.ljyh.mei.constants.LoopPlaybackKey
+import com.ljyh.mei.constants.CloudShuffleEnabledKey
 import com.ljyh.mei.constants.MusicQuality
 import com.ljyh.mei.constants.MusicQualityKey
 import com.ljyh.mei.constants.NoAudioSourceKey
@@ -57,6 +59,7 @@ fun PlaySetting(
     val navController = LocalNavController.current
     val (musicQuality, onMusicQualityChange) = rememberEnumPreference(MusicQualityKey, MusicQuality.EXHIGH)
     val (loopPlayback, onLoopPlaybackChange) = rememberPreference(LoopPlaybackKey, true)
+    val (cloudShuffle, onCloudShuffleChange) = rememberPreference(CloudShuffleEnabledKey, true)
     val (previousPlayback, onPreviousPlaybackChange) = rememberPreference(PreviousPlaybackKey, true)
     val (noAudioSource, onNoAudioSourceChange) = rememberPreference(NoAudioSourceKey, false)
     val (autoMixEnabled, onAutoMixEnabledChange) = rememberPreference(AutoMixEnabledKey, false)
@@ -84,6 +87,10 @@ fun PlaySetting(
                     }
                 }
                 ToggleRow(stringResource(R.string.loop_playback), "arrow.trianglehead.2.clockwise.rotate.90", loopPlayback, onLoopPlaybackChange)
+                ToggleRow(
+                    stringResource(R.string.cloud_shuffle), "shuffle", cloudShuffle, onCloudShuffleChange,
+                    description = stringResource(R.string.cloud_shuffle_description),
+                )
                 ToggleRow(stringResource(R.string.skip_unavailable), "waveform.slash", noAudioSource, onNoAudioSourceChange)
                 ToggleRow(stringResource(R.string.previous_behavior), "backward.fill", previousPlayback, onPreviousPlaybackChange)
                 ValueRow(stringResource(R.string.music_quality), "waveform") {
@@ -137,11 +144,31 @@ fun PlaySetting(
 }
 
 @Composable
-private fun ToggleRow(title: String, symbol: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+private fun SettingsHeading(title: String) {
+    Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 12.dp, start = 4.dp))
+}
+
+@Composable
+private fun ToggleRow(
+    title: String,
+    symbol: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    description: String? = null,
+) {
     GlassCard(Modifier.fillMaxWidth(), onClick = { onCheckedChange(!checked) }) {
         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             SfIcon(symbol, contentDescription = null)
-            Text(title, modifier = Modifier.weight(1f).padding(horizontal = 14.dp))
+            Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
+                Text(title)
+                if (description != null) {
+                    Text(
+                        description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
             GlassToggle(checked, onCheckedChange)
         }
     }

@@ -1,104 +1,134 @@
 package com.ljyh.mei.playback
 
-import androidx.media3.common.MediaItem
-import com.ljyh.mei.data.model.metadata
+import android.util.Log
 import com.ljyh.mei.data.repository.MeloXRepository
+import com.ljyh.mei.data.repository.PLAYBACK_HISTORY_DIAGNOSTIC_ENDPOINT
+import com.ljyh.mei.data.repository.diagnosticSummary
+import com.ljyh.mei.data.repository.failureSummary
+import com.ljyh.mei.data.repository.playbackExceptionReason
+import com.ljyh.mei.data.repository.playbackExceptionType
+import com.ljyh.mei.utils.log.logPlaybackHistory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /** Serializes NetEase playback history events without blocking local playback. */
 class PlaybackHistoryReporter(
-    private val scope: CoroutineScope,
     private val repository: MeloXRepository,
 ) {
     private data class ActivePlayback(
         val mediaId: String,
         val songId: Long,
-        val sourceId: Long,
-        val durationMs: Long,
-        var positionMs: Long,
+        val source: PlaybackHistorySource,
     )
 
-    private var active: ActivePlayback? = null
+    private val reporterJob = SupervisorJob()
+    private val scope = CoroutineScope(reporterJob + Dispatchers.IO)
+    private val lock = Any()
+    private var activePlayback: ActivePlayback? = null
     private var submissionJob: Job? = null
+    private var closed = false
 
-    fun recordStart(mediaItem: MediaItem, positionMs: Long = 0) {
-        val target = mediaItem.toReportTarget(positionMs) ?: return
-        if (active?.mediaId == target.mediaId) {
-            active?.positionMs = positionMs.coerceAtLeast(0)
+    internal fun recordStart(
+        mediaId: String,
+        songId: Long,
+        source: PlaybackHistorySource,
+    ) {
+        if (songId <= 0L || source.sourceId <= 0L) return
+        synchronized(lock) {
+            if (closed || activePlayback?.mediaId == mediaId) return
+            activePlayback = ActivePlayback(mediaId, songId, source)
+            enqueueLocked("startplay->play") {
+                val result = repository.recordPlaybackStart(
+                    songId = songId,
+                    sourceId = source.sourceId,
+                    source = source.source,
+                )
+                if (result?.accepted == true) {
+                    logPlaybackHistory(Log.INFO, "Playback history start accepted")
+                } else {
+                    logPlaybackHistory(
+                        Log.WARN,
+                        "Playback history start was not accepted: %s",
+                        result?.failureSummary()
+                            ?: "startplay={not attempted} play={not attempted}",
+                    )
+                }
+            }
+        }
+    }
+
+    internal fun recordDuration(mediaId: String, playedDurationMs: Long) {
+        synchronized(lock) {
+            if (closed) return
+            val playback = activePlayback?.takeIf { it.mediaId == mediaId } ?: return
+            activePlayback = null
+            val timeSeconds = playedDurationMs.coerceAtLeast(0L) / 1_000L
+            enqueueLocked("play duration") {
+                val result = repository.recordPlaybackDuration(
+                    songId = playback.songId,
+                    sourceId = playback.source.sourceId,
+                    source = playback.source.source,
+                    timeSeconds = timeSeconds,
+                )
+                if (result?.businessAccepted == true) {
+                    logPlaybackHistory(
+                        Log.INFO,
+                        "Playback history duration accepted time=%s",
+                        timeSeconds,
+                    )
+                } else {
+                    logPlaybackHistory(
+                        Log.WARN,
+                        "Playback history duration was not accepted time=%s: %s",
+                        timeSeconds,
+                        result?.diagnosticSummary() ?: "not attempted",
+                    )
+                }
+            }
+        }
+    }
+
+    /** Starts a non-blocking drain and rejects all future events. */
+    fun close() {
+        val pending = synchronized(lock) {
+            if (closed) return
+            closed = true
+            submissionJob
+        }
+        if (pending == null) {
+            reporterJob.cancel()
             return
         }
-        finishActive()
-        active = target
-        enqueue("start songId=${target.songId}") {
-            repository.recordRecentPlayback(target.songId, target.sourceId)
+
+        scope.launch {
+            pending.join()
+            reporterJob.cancel()
         }
     }
 
-    fun updatePosition(mediaId: String?, positionMs: Long) {
-        active?.takeIf { it.mediaId == mediaId }?.positionMs = positionMs.coerceAtLeast(0)
-    }
-
-    fun finish(mediaId: String?, positionMs: Long, completed: Boolean = false) {
-        val current = active ?: return
-        if (mediaId != null && current.mediaId != mediaId) return
-        current.positionMs = positionMs.coerceAtLeast(0)
-        finishActive(completed)
-    }
-
-    fun finishIfChanged(mediaItem: MediaItem?, completedPrevious: Boolean = false) {
-        val current = active ?: return
-        if (mediaItem?.mediaId != current.mediaId) finishActive(completedPrevious)
-    }
-
-    private fun finishActive(completed: Boolean = false) {
-        val current = active ?: return
-        active = null
-        val recordedMs = if (completed && current.durationMs > 0) {
-            current.durationMs
-        } else if (current.durationMs > 0) {
-            current.positionMs.coerceAtMost(current.durationMs)
-        } else {
-            current.positionMs
-        }
-        val timeSeconds = (recordedMs / 1_000L).coerceAtLeast(0).toInt()
-        enqueue("duration songId=${current.songId} time=$timeSeconds") {
-            repository.recordPlaybackDuration(current.songId, current.sourceId, timeSeconds)
-        }
-    }
-
-    private fun enqueue(operation: String, block: suspend () -> Unit) {
+    private fun enqueueLocked(operation: String, block: suspend () -> Unit) {
         val previous = submissionJob
         submissionJob = scope.launch {
             previous?.join()
             try {
                 block()
-                Timber.tag(TAG).d("Playback history report succeeded: %s", operation)
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {
-                Timber.tag(TAG).w(error, "Playback history report failed: %s", operation)
+                logPlaybackHistory(
+                    Log.WARN,
+                    "Playback history request failed endpoint=%s action=%s " +
+                        "exceptionType=%s reason=%s",
+                    PLAYBACK_HISTORY_DIAGNOSTIC_ENDPOINT,
+                    operation,
+                    playbackExceptionType(error),
+                    playbackExceptionReason(error),
+                )
             }
         }
-    }
-
-    private fun MediaItem.toReportTarget(positionMs: Long): ActivePlayback? {
-        val metadata = metadata ?: return null
-        if (metadata.isPodcast || metadata.isLocal) return null
-        val songId = mediaId.toLongOrNull()?.takeIf { it > 0 } ?: return null
-        return ActivePlayback(
-            mediaId = mediaId,
-            songId = songId,
-            sourceId = metadata.album.id.coerceAtLeast(0),
-            durationMs = metadata.duration.coerceAtLeast(0),
-            positionMs = positionMs.coerceAtLeast(0),
-        )
-    }
-
-    private companion object {
-        const val TAG = "PlaybackHistory"
     }
 }

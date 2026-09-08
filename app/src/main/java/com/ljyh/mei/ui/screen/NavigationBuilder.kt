@@ -3,7 +3,13 @@ package com.ljyh.mei.ui.screen
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import java.net.URLDecoder
 import com.ljyh.mei.ui.screen.about.AboutScreen
 import com.ljyh.mei.ui.screen.album.AlbumDetailScreen
@@ -11,6 +17,7 @@ import com.ljyh.mei.ui.screen.history.HistoryScreen
 import com.ljyh.mei.ui.screen.local.LocalMusicScreen
 import com.ljyh.mei.ui.screen.local.LocalSongListScreen
 import com.ljyh.mei.ui.screen.main.home.HomeHubScreen
+import com.ljyh.mei.ui.navigation.LibraryPage
 import com.ljyh.mei.ui.screen.main.library.LibraryScreen
 import com.ljyh.mei.ui.screen.playlist.EveryDay
 import com.ljyh.mei.ui.screen.playlist.PlaylistScreen
@@ -43,6 +50,275 @@ import com.ljyh.mei.ui.screen.account.AccountHomeScreen
 import com.ljyh.mei.ui.screen.account.ListeningRankScreen
 import com.ljyh.mei.ui.screen.song.SongWikiScreen
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun NavGraphBuilder.navigationBuilder(
+    navController: NavHostController,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    composable(Screen.Home.route) {
+        HomeHubScreen()
+    }
+
+    composable(Screen.Library.route) {
+        LibraryScreen()
+    }
+
+    composable(
+        route = "${Screen.LibraryCategory.route}/{page}",
+        arguments = listOf(navArgument("page") { type = NavType.StringType }),
+    ) { entry ->
+        LibraryPage.entries.firstOrNull { it.name == entry.arguments?.getString("page") }?.let {
+            LibraryScreen(category = it)
+        }
+    }
+
+    composable(Screen.FindMusic.route) {
+        FindMusicScreen()
+    }
+
+    composable(
+        route = "${Screen.PlaylistCategory.route}/{category}/{title}",
+        arguments = listOf(
+            navArgument("category") { type = NavType.StringType },
+            navArgument("title") { type = NavType.StringType },
+        ),
+    ) {
+        val category = it.arguments?.getString("category").orEmpty()
+        val title = it.arguments?.getString("title").orEmpty()
+        FindMusicScreen(initialCategory = category, titleOverride = title)
+    }
+
+    composable(Screen.Podcasts.route) {
+        PodcastScreen()
+    }
+
+    composable(Screen.CloudMusic.route) {
+        CloudMusicScreen()
+    }
+
+    composable(Screen.Search.route) {
+        SearchLandingScreen()
+    }
+
+    composable(Screen.PrivateMessages.route) {
+        ConversationsScreen()
+    }
+
+    composable(Screen.MessageContacts.route) {
+        MessageContactsScreen()
+    }
+
+    composable(
+        route = "${Screen.PrivateConversation.route}/{userId}",
+        arguments = listOf(navArgument("userId") { type = NavType.LongType }),
+    ) {
+        ConversationScreen(it.arguments!!.getLong("userId"))
+    }
+
+    composable(Screen.ListenTogether.route) {
+        ListenTogetherScreen()
+    }
+
+    composable(Screen.SongRecognition.route) {
+        SongRecognitionScreen()
+    }
+
+    composable(Screen.NeteaseLogin.route) {
+        NeteaseLoginScreen()
+    }
+
+    composable(Screen.AccountHome.route) {
+        AccountHomeScreen()
+    }
+
+    composable(
+        route = "${Screen.AccountListeningRank.route}/{userId}",
+        arguments = listOf(navArgument("userId") { type = NavType.LongType }),
+    ) {
+        ListeningRankScreen(it.arguments!!.getLong("userId"))
+    }
+
+    composable(
+        route = "${Screen.PodcastDetail.route}/{id}",
+        arguments = listOf(navArgument("id") { type = NavType.LongType }),
+    ) {
+        PodcastDetailScreen(it.arguments!!.getLong("id"))
+    }
+
+    composable(Screen.Test.route) {
+        Test()
+    }
+
+    composable(Screen.Setting.route) {
+        SettingScreen(scrollBehavior)
+    }
+
+    composable(Screen.AppearanceSettings.route) {
+        AppearanceSettings(scrollBehavior)
+    }
+
+    composable(Screen.GeneralSettings.route) {
+        GeneralSettings()
+    }
+
+    composable(Screen.LyricsSettings.route) {
+        LyricsSettings()
+    }
+
+    composable(Screen.ContentSettings.route) {
+        ContentsSetting(scrollBehavior)
+    }
+    composable(Screen.PlaySettings.route){
+        PlaySetting(scrollBehavior)
+    }
+    composable(Screen.EqualizerSettings.route) {
+        EqualizerSettings()
+    }
+
+    composable(Screen.DownloadSettings.route) {
+        DownloadSetting(scrollBehavior)
+    }
+
+    composable(Screen.StorageManagement.route) {
+        StorageManagementScreen()
+    }
+
+    composable(Screen.DownloadManage.route) {
+        DownloadManageScreen(scrollBehavior)
+    }
+
+    composable(Screen.LocalMusic.route) {
+        LocalMusicScreen(scrollBehavior)
+    }
+
+    composable(
+        route = "${Screen.LocalSongList.route}/{type}/{name}",
+        arguments = listOf(
+            navArgument("type") { type = NavType.StringType },
+            navArgument("name") { type = NavType.StringType }
+        )
+    ) {
+        val type = it.arguments?.getString("type") ?: "all"
+        val name = it.arguments?.getString("name") ?: ""
+        val context = LocalContext.current
+
+        val filterValue: String
+        val title: String
+
+        when (type) {
+            "folder" -> {
+                filterValue = URLDecoder.decode(name, "UTF-8")
+                title = filterValue.substringAfterLast('/').ifEmpty { filterValue.substringAfterLast(":") }
+            }
+            "artist" -> {
+                filterValue = name
+                title = name
+            }
+            "album" -> {
+                filterValue = name
+                title = name
+            }
+            else -> {
+                filterValue = name
+                title = "全部歌曲"
+            }
+        }
+
+        LocalSongListScreen(
+            filterType = when (type) {
+                "folder" -> "folder"
+                else -> type
+            },
+            filterValue = filterValue,
+            title = title,
+            scrollBehavior = scrollBehavior
+        )
+    }
+
+    composable(Screen.EveryDay.route){
+        EveryDay()
+    }
+    composable(Screen.About.route) {
+        AboutScreen()
+    }
+    composable(Screen.Log.route) {
+        LogScreen()
+    }
+    composable(
+        route = "${Screen.SearchResult.route}/{query}/{type}",
+        arguments = listOf(
+            navArgument("query") {
+                type = NavType.StringType
+            }
+            ,
+            navArgument("type") {
+                type = NavType.IntType
+            }
+        ),
+    ) {
+        SearchResultScreen(
+            query = android.net.Uri.decode(it.arguments!!.getString("query")!!),
+            type= it.arguments!!.getInt("type"),
+        )
+    }
+    composable(
+        route = "${Screen.PlayList.route}/{id}",
+        arguments = listOf(
+            navArgument("id") {
+                type = NavType.LongType
+            }
+        )
+    ) {
+        PlaylistScreen(id = it.arguments!!.getLong("id"))
+    }
+
+
+    composable(
+        route = "${Screen.Album.route}/{id}",
+        arguments = listOf(
+            navArgument("id") {
+                type = NavType.LongType
+            }
+        )
+    ) {
+        AlbumDetailScreen(id = it.arguments!!.getLong("id"))
+    }
+
+    composable(
+        route = "${Screen.Artist.route}/{id}",
+        arguments = listOf(
+            navArgument("id") {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        ArtistScreen(id = it.arguments!!.getString("id")!!)
+    }
+
+    composable(Screen.History.route) {
+        HistoryScreen()
+    }
+
+    composable(
+        route = "${Screen.Comment.route}/{songId}",
+        arguments = listOf(
+            navArgument("songId") { type = NavType.StringType }
+        )
+    ) {
+        CommentScreen(
+            songId = it.arguments!!.getString("songId")!!
+        )
+    }
+
+    composable(
+        route = "${Screen.SongWiki.route}/{songId}",
+        arguments = listOf(navArgument("songId") { type = NavType.LongType }),
+    ) {
+        SongWikiScreen(songId = it.arguments!!.getLong("songId"))
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun navigationEntry(
@@ -53,6 +329,11 @@ fun navigationEntry(
     when {
         route == Screen.Home.route -> HomeHubScreen()
         route == Screen.Library.route -> LibraryScreen(isNavigationTab = isNavigationTab)
+        route.startsWith("${Screen.LibraryCategory.route}/") -> {
+            LibraryPage.entries.firstOrNull {
+                it.name == route.substringAfter("${Screen.LibraryCategory.route}/")
+            }?.let { LibraryScreen(category = it) }
+        }
         route == Screen.FindMusic.route -> FindMusicScreen(isNavigationTab = isNavigationTab)
         route.startsWith("${Screen.PlaylistCategory.route}/") -> {
             val arguments = route.substringAfter("${Screen.PlaylistCategory.route}/")

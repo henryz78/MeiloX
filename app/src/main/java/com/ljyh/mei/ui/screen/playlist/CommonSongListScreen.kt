@@ -79,6 +79,7 @@ fun CommonSongListScreen(
     onPlaylistSearchQueryChange: ((String) -> Unit)? = null,
     onPlaylistSearchActiveChange: (Boolean) -> Unit = {},
     viewModel: PlaylistViewModel = hiltViewModel(),
+    onShufflePlay: () -> Unit = onPlayAll,
 ) {
     val device = rememberDeviceInfo()
     val bottomPadding = LocalPlayerAwareWindowInsets.current
@@ -220,6 +221,7 @@ fun CommonSongListScreen(
                         coverList = uiData.coverList,
                         creator = uiData.creatorName,
                         onPlayAll = onPlayAll,
+                        onShufflePlay = onShufflePlay,
                         onDownload = onDownload,
                         actionIcon = headerActionIcon,
                         actionLabel = headerActionLabel,
